@@ -38,24 +38,28 @@ fs.readdirSync(__dirname + '/models').forEach(function(fileName){
 
 
 var userSchema = new schema({
-	name: String
+	name: String,
+	languages: String,
+	age: Number
+                            
 });
-mongoose.connect('mongodb://localhost/mongo');
-mongoose.model('empData', userSchema);
+mongoose.connect('mongodb://localhost/test');
+mongoose.model('utkusers', userSchema);
 
 app.get('/', function(req, res, next){
 	// res.send({name: 'Utkal Nayak'});
 	res.render('index',{title: 'Utkal'});
 });
 
-app.get('/users', function(req, res, next){
-	mongoose.model('empData').find(function(err, users){
+app.get('/users/:userid', function(req, res, next){
+	var reqId =  req.param('userid');
+		mongoose.model('utkusers').find({age: req.params.userid}, function(err, users){
 		res.send(users);
-	});
+});
 });
 
 app.get('/enter', function(req, res, next){
-	mongoose.model('enter').find(function(err, users){
+	mongoose.model('utkusers').find(function(err, users){
 		res.send(users);
 	});
 });
